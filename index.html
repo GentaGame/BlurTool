@@ -56,6 +56,36 @@
             position: relative;
         }
 
+        /* デスクトップ用のレイアウト */
+        @media (min-width: 768px) {
+            .content {
+                flex-direction: row;
+                gap: 16px;
+            }
+
+            .canvas-and-toolbar {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .controls-wrapper {
+                width: 300px;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+
+        .canvas-and-toolbar {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0; /* Flexboxでの縮小を許可 */
+        }
+
         .canvas-container {
             position: relative;
             flex: 1;
@@ -67,6 +97,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 50vh; /* 最小の高さを設定 */
         }
 
         #imageCanvas {
@@ -316,68 +347,72 @@
     <div class="header">画像ぼかしツール</div>
 
     <div class="content">
-        <div class="canvas-container" id="canvasContainer">
-            <canvas id="imageCanvas"></canvas>
-            <div class="empty-state" id="emptyState">
-                <div class="empty-state-icon">📷</div>
-                <div class="empty-state-text">画像を選択してください</div>
-                <button id="uploadBtn">画像を選択</button>
+        <div class="canvas-and-toolbar">
+            <div class="canvas-container" id="canvasContainer">
+                <canvas id="imageCanvas"></canvas>
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-state-icon">📷</div>
+                    <div class="empty-state-text">画像を選択してください</div>
+                    <button id="uploadBtn">画像を選択</button>
+                </div>
+                <div class="loading" id="loadingIndicator">
+                    <div class="spinner"></div>
+                </div>
             </div>
-            <div class="loading" id="loadingIndicator">
-                <div class="spinner"></div>
+
+            <div class="toolbar" id="toolbar" style="display: none;">
+                <button class="tool-button active" id="blurTool">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z" />
+                    </svg>
+                    ぼかし
+                </button>
+                <button class="tool-button" id="undoTool">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" />
+                    </svg>
+                    元に戻す
+                </button>
+                <button class="tool-button" id="resetTool">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 10h7V3l-2.35 3.35z" />
+                    </svg>
+                    リセット
+                </button>
             </div>
         </div>
 
-        <div class="toolbar" id="toolbar" style="display: none;">
-            <button class="tool-button active" id="blurTool">
-                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z" />
-                </svg>
-                ぼかし
-            </button>
-            <button class="tool-button" id="undoTool">
-                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z" />
-                </svg>
-                元に戻す
-            </button>
-            <button class="tool-button" id="resetTool">
-                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 10h7V3l-2.35 3.35z" />
-                </svg>
-                リセット
-            </button>
-        </div>
+        <div class="controls-wrapper">
+            <div class="controls" id="controls" style="display: none;">
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>ブラシサイズ</span>
+                        <span id="brushSizeValue">50</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="brushSize" min="10" max="300" value="50">
+                    </div>
+                </div>
 
-        <div class="controls" id="controls" style="display: none;">
-            <div class="control-group">
-                <div class="control-label">
-                    <span>ブラシサイズ</span>
-                    <span id="brushSizeValue">50</span>
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>ぼかし強度</span>
+                        <span id="blurStrengthValue">10</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="blurStrength" min="1" max="20" value="10">
+                    </div>
                 </div>
-                <div class="slider-container">
-                    <input type="range" id="brushSize" min="10" max="300" value="50">
-                </div>
-            </div>
 
-            <div class="control-group">
-                <div class="control-label">
-                    <span>ぼかし強度</span>
-                    <span id="blurStrengthValue">10</span>
+                <div class="button-group">
+                    <button id="downloadBtn">保存</button>
+                    <button class="secondary" id="newImageBtn">新しい画像</button>
                 </div>
-                <div class="slider-container">
-                    <input type="range" id="blurStrength" min="1" max="20" value="10">
                 </div>
-            </div>
-
-            <div class="button-group">
-                <button id="downloadBtn">保存</button>
-                <button class="secondary" id="newImageBtn">新しい画像</button>
-            </div>
-        </div>
+                </div>
     </div>
 
     <input type="file" id="fileInput" class="file-input" accept="image/*">
@@ -469,20 +504,50 @@
             reader.onload = function (event) {
                 const img = new Image();
                 img.onload = function () {
+                    // 画像サイズが大きすぎないかチェック
+                    let finalWidth = img.width;
+                    let finalHeight = img.height;
+
+                    // 大きな画像はリサイズして処理を軽くする（最大2048px）
+                    const MAX_DIMENSION = 2048;
+                    if (finalWidth > MAX_DIMENSION || finalHeight > MAX_DIMENSION) {
+                        if (finalWidth > finalHeight) {
+                            finalHeight = Math.round((finalHeight / finalWidth) * MAX_DIMENSION);
+                            finalWidth = MAX_DIMENSION;
+                        } else {
+                            finalWidth = Math.round((finalWidth / finalHeight) * MAX_DIMENSION);
+                            finalHeight = MAX_DIMENSION;
+                        }
+                    }
+
                     // キャンバスのサイズを設定
-                    setCanvasSize(img.width, img.height);
+                    imageCanvas.width = finalWidth;
+                    imageCanvas.height = finalHeight;
+
+                    // コンテナのサイズを取得
+                    const containerWidth = canvasContainer.clientWidth;
+                    const containerHeight = canvasContainer.clientHeight;
+
+                    // アスペクト比を維持しながらサイズを計算
+                    const ratio = Math.min(containerWidth / finalWidth, containerHeight / finalHeight);
+
+                    // CSSスケールでレンダリング
+                    imageCanvas.style.width = `${finalWidth * ratio}px`;
+                    imageCanvas.style.height = `${finalHeight * ratio}px`;
 
                     // ズームとオフセットをリセット
                     scale = 1;
                     offsetX = 0;
                     offsetY = 0;
 
-                    // 元の画像を描画
-                    drawImageWithTransform();
-
+                    // 元の画像を描画（リサイズあり）
+                    ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
+                    ctx.drawImage(img, 0, 0, finalWidth, finalHeight);
+                    
                     // 初期状態を保存
                     originalImage = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
                     currentState = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
+                    originalImageObj = img;
 
                     // UIを更新
                     emptyState.style.display = 'none';
@@ -494,51 +559,18 @@
                     loadingIndicator.style.display = 'none';
                 };
                 img.src = event.target.result;
-                originalImageObj = img; // 元の画像オブジェクトを保存
             };
 
             reader.readAsDataURL(file);
             fileInput.value = '';
         }
 
-        // キャンバスサイズの設定
-        function setCanvasSize(width, height) {
-            // コンテナのサイズを取得
-            const containerWidth = canvasContainer.clientWidth;
-            const containerHeight = canvasContainer.clientHeight;
-
-            // アスペクト比を維持しながらサイズを計算
-            const ratio = Math.min(containerWidth / width, containerHeight / height);
-
-            imageCanvas.width = width;
-            imageCanvas.height = height;
-
-            // CSSスケールでレンダリング
-            imageCanvas.style.width = `${width * ratio}px`;
-            imageCanvas.style.height = `${height * ratio}px`;
-        }
-
         // 変換行列を適用して画像を描画
         function drawImageWithTransform() {
-            if (!originalImageObj) return;
-
+            if (!originalImage) return;
+            
             ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-
-            ctx.save();
-            ctx.translate(offsetX, offsetY);
-            ctx.scale(scale, scale);
-
-            // 画像を描画
-            const centerX = (imageCanvas.width / 2 - originalImageObj.width * scale / 2) / scale;
-            const centerY = (imageCanvas.height / 2 - originalImageObj.height * scale / 2) / scale;
-
-            ctx.drawImage(originalImageObj, centerX, centerY);
-            ctx.restore();
-
-            // 現在の状態を保存
-            if (currentState) {
-                currentState = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
-            }
+            ctx.putImageData(currentState, 0, 0);
         }
 
         // ブラシサイズの更新
@@ -740,46 +772,62 @@
             return points;
         }
 
-        // ぼかし効果の適用（軽量化バージョン）
+                // ぼかし効果の適用（パフォーマンス最適化版）
         function applyBlurEffect(x, y) {
-            // ブラシサイズに基づいて描画
-            const radius = brushSize / 2;
+            // リクエストアニメーションフレームを使った非同期処理
+            requestAnimationFrame(() => {
+                // ブラシサイズに基づいて描画
+                const radius = brushSize / 2;
 
-            // 簡易版のぼかし処理（処理を軽くするため）
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, Math.PI * 2, false);
-            ctx.clip();
+                // 簡易版のぼかし処理（処理を軽くするため）
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+                ctx.clip();
+                
+                // キャンバス上の小さな領域だけを処理
+                const areaSize = radius * 2;
+                const areaX = Math.max(0, x - radius);
+                const areaY = Math.max(0, y - radius);
+                const areaWidth = Math.min(areaSize, imageCanvas.width - areaX);
+                const areaHeight = Math.min(areaSize, imageCanvas.height - areaY);
+                
+                // スタックオーバーフローを避けるため小さなサイズにする
+                const maxRenderSize = Math.min(areaWidth, areaHeight, 300);
+                const scaleFactor = maxRenderSize / Math.max(areaWidth, areaHeight);
+                const renderWidth = Math.ceil(areaWidth * scaleFactor);
+                const renderHeight = Math.ceil(areaHeight * scaleFactor);
+                
+                // 処理領域をスケールダウンして処理を軽くする
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = renderWidth;
+                tempCanvas.height = renderHeight;
+                const tempCtx = tempCanvas.getContext('2d');
 
-            // ぼかし強度に応じてぼかしを適用
-            const blurAmount = blurStrength;
+                // 現在の領域を小さなキャンバスにコピー
+                tempCtx.drawImage(
+                    imageCanvas,
+                    areaX, areaY, areaWidth, areaHeight,
+                    0, 0, renderWidth, renderHeight
+                );
 
-            // キャンバス上の小さな領域だけを処理
-            const areaSize = radius * 2 + blurAmount * 2;
-            const areaX = Math.max(0, x - radius - blurAmount);
-            const areaY = Math.max(0, y - radius - blurAmount);
-            const areaWidth = Math.min(areaSize, imageCanvas.width - areaX);
-            const areaHeight = Math.min(areaSize, imageCanvas.height - areaY);
+                // ぼかしフィルター適用
+                const pixelRatio = 1; // パフォーマンス向上のため固定比率
+                ctx.filter = `blur(${blurStrength * pixelRatio}px)`;
 
-            // 現在の領域を取得
-            const area = ctx.getImageData(areaX, areaY, areaWidth, areaHeight);
+                // ぼかし処理したものを元のキャンバスに描画
+                ctx.drawImage(
+                    tempCanvas,
+                    0, 0, renderWidth, renderHeight,
+                    areaX, areaY, areaWidth, areaHeight
+                );
 
-            // 簡易ぼかし処理
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = areaWidth;
-            tempCanvas.height = areaHeight;
-            const tempCtx = tempCanvas.getContext('2d');
-            tempCtx.putImageData(area, 0, 0);
+                ctx.filter = 'none';
+                ctx.restore();
 
-            // ぼかしフィルター適用
-            ctx.filter = `blur(${blurAmount}px)`;
-            ctx.drawImage(tempCanvas, areaX, areaY);
-            ctx.filter = 'none';
-            ctx.restore();
-
-            // 現在の状態を更新
-            currentState = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
-            hasEdits = true;
+                // 現在の状態を更新
+                currentState = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
+            });
         }
 
         // 直前の操作を元に戻す
@@ -818,7 +866,6 @@
         // ウィンドウリサイズ時にキャンバスサイズを調整
         window.addEventListener('resize', () => {
             if (originalImage) {
-                setCanvasSize(imageCanvas.width, imageCanvas.height);
                 ctx.putImageData(currentState, 0, 0);
             }
         });
@@ -826,6 +873,16 @@
         // 元の画像オブジェクトを保存する変数
         let originalImageObj = null;
     </script>
+<script>
+    // GitHub Pagesでホスティングするためのサービスワーカー登録
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/BlurTool/sw.js').catch(error => {
+                console.log('ServiceWorker registration failed:', error);
+            });
+        });
+    }
+</script>
 </body>
 
 </html>
