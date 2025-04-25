@@ -382,6 +382,12 @@
                     </svg>
                     リセット
                 </button>
+                <button class="tool-button" id="fullscreenTool">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                    </svg>
+                    全画面
+                </button>
             </div>
         </div>
 
@@ -443,6 +449,7 @@
         const blurTool = document.getElementById('blurTool');
         const undoTool = document.getElementById('undoTool');
         const resetTool = document.getElementById('resetTool');
+            const fullscreenTool = document.getElementById('fullscreenTool');
         const uploadHelpDialog = document.getElementById('uploadHelpDialog');
         const closeHelpBtn = document.getElementById('closeHelpBtn');
         const loadingIndicator = document.getElementById('loadingIndicator');
@@ -480,6 +487,7 @@
         newImageBtn.addEventListener('click', () => fileInput.click());
         undoTool.addEventListener('click', undoLastAction);
         resetTool.addEventListener('click', resetImage);
+            fullscreenTool.addEventListener('click', toggleFullscreen);
         closeHelpBtn.addEventListener('click', () => uploadHelpDialog.classList.remove('visible'));
 
         // タッチイベントのサポート
@@ -862,6 +870,17 @@
             link.href = imageCanvas.toDataURL('image/png');
             link.click();
         }
+
+            // フルスクリーンモードの切り替え
+            function toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            }
 
         // ウィンドウリサイズ時にキャンバスサイズを調整
         window.addEventListener('resize', () => {
