@@ -11,8 +11,9 @@
             --background-color: #f5f5f7;
             --text-color: #1d1d1f;
             --secondary-bg: #ffffff;
-            --border-radius: 12px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 8px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --padding-size: 10px;
         }
 
         * {
@@ -34,33 +35,21 @@
             overflow: hidden;
         }
 
-        .header {
-            padding: 16px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: 500;
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
-        }
-
         .content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 16px;
+            padding: var(--padding-size);
             overflow: hidden;
             position: relative;
+            height: 100vh;
         }
 
         /* デスクトップ用のレイアウト */
         @media (min-width: 768px) {
             .content {
                 flex-direction: row;
-                gap: 16px;
+                gap: var(--padding-size);
             }
 
             .canvas-and-toolbar {
@@ -71,11 +60,11 @@
             }
 
             .controls-wrapper {
-                width: 300px;
+                width: 250px;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
-                gap: 16px;
+                overflow: auto; /* スクロール可能に */
             }
         }
 
@@ -93,11 +82,11 @@
             background-color: var(--secondary-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            margin-bottom: 16px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 50vh; /* 最小の高さを設定 */
+            min-height: 60vh; /* 最小の高さを設定 */
         }
 
         #imageCanvas {
@@ -109,13 +98,18 @@
             touch-action: none;
         }
 
+        .controls-wrapper {
+            max-height: 35vh; /* モバイルでの最大高さ制限 */
+            overflow-y: auto; /* スクロール可能に */
+        }
+
         .controls {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             background-color: var(--secondary-bg);
             border-radius: var(--border-radius);
-            padding: 20px;
+            padding: var(--padding-size);
             box-shadow: var(--shadow);
             z-index: 3;
             position: relative;
@@ -124,19 +118,19 @@
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .control-label {
             display: flex;
             justify-content: space-between;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
         }
 
         .slider-container {
             position: relative;
-            height: 24px;
+            height: 20px;
             display: flex;
             align-items: center;
         }
@@ -152,26 +146,20 @@
 
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: var(--primary-color);
             cursor: pointer;
             border: none;
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
             transition: all 0.2s ease;
-        }
-
-        input[type="range"]:active::-webkit-slider-thumb {
-            box-shadow: 0 0 0 6px rgba(0, 113, 227, 0.3);
-            width: 28px;
-            height: 28px;
         }
 
         .button-group {
             display: flex;
-            gap: 12px;
-            margin-top: 8px;
+            gap: 10px;
+            margin-top: 5px;
         }
 
         button {
@@ -179,27 +167,22 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 14px 20px;
+            padding: 10px;
             border-radius: var(--border-radius);
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
+            box-shadow: 0 2px 6px rgba(0, 113, 227, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        button:active {
-            transform: scale(0.98);
-            box-shadow: 0 1px 4px rgba(0, 113, 227, 0.2);
-        }
-
         button.secondary {
             background-color: #e0e0e0;
             color: var(--text-color);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .file-input {
@@ -211,22 +194,22 @@
             justify-content: space-around;
             background-color: var(--secondary-bg);
             border-radius: var(--border-radius);
-            padding: 12px;
-            margin-bottom: 16px;
+            padding: 8px;
+            margin-bottom: 8px;
             box-shadow: var(--shadow);
         }
 
         .tool-button {
             border: none;
             background: none;
-            font-size: 16px;
-            padding: 10px 16px;
-            border-radius: 8px;
+            font-size: 14px;
+            padding: 6px 10px;
+            border-radius: var(--border-radius);
             color: var(--text-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .tool-button.active {
@@ -246,15 +229,15 @@
         }
 
         .empty-state-icon {
-            font-size: 60px;
-            margin-bottom: 16px;
+            font-size: 50px;
+            margin-bottom: 12px;
             color: #999;
         }
 
         .empty-state-text {
-            font-size: 18px;
+            font-size: 16px;
             color: #666;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         /* イメージアップロードの案内モーダル */
@@ -282,29 +265,29 @@
         .dialog-content {
             background-color: var(--secondary-bg);
             border-radius: var(--border-radius);
-            padding: 24px;
+            padding: 20px;
             max-width: 90%;
-            width: 340px;
+            width: 320px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
 
         .dialog-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             text-align: center;
         }
 
         .dialog-text {
-            font-size: 16px;
+            font-size: 14px;
             line-height: 1.5;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .icon {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
         }
 
         /* Loading indicator */
@@ -323,9 +306,9 @@
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(0, 113, 227, 0.2);
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(0, 113, 227, 0.2);
             border-radius: 50%;
             border-top-color: var(--primary-color);
             animation: spin 1s linear infinite;
@@ -340,12 +323,16 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* フルスクリーン時のスタイル調整 */
+        :fullscreen {
+            background: var(--background-color);
+            padding: 0;
+        }
     </style>
 </head>
 
 <body>
-    <div class="header">画像ぼかしツール</div>
-
     <div class="content">
         <div class="canvas-and-toolbar">
             <div class="canvas-container" id="canvasContainer">
@@ -417,8 +404,8 @@
                     <button id="downloadBtn">保存</button>
                     <button class="secondary" id="newImageBtn">新しい画像</button>
                 </div>
-                </div>
-                </div>
+            </div>
+            </div>
     </div>
 
     <input type="file" id="fileInput" class="file-input" accept="image/*">
@@ -477,6 +464,49 @@
         let isPanning = false;
         let lastDistance = 0;
         let isZooming = false;
+
+            // ドラッグ操作の処理負荷を軽減するための変数
+                let lastDrawTime = 0;
+            let pendingPoints = [];
+            let drawAnimationId = null;
+
+                // ブラシサイズに応じてスロットリング時間を動的に調整
+                function getThrottleTime() {
+                    // さらに長いスロットリング時間（処理頻度を下げる）
+                    return Math.max(20, Math.min(80, brushSize / 4)); // 前は最大50msだったのを80msに
+                }
+
+                // ブラシサイズに応じてポイントの間引き率を決定
+                function getStrideFactor() {
+                    // より積極的に間引く（前は brushSize / 30 だった）
+                    const base = Math.max(1, Math.floor(brushSize / 15));
+                    
+                    // モバイルではさらに積極的に間引く
+                    if ('ontouchstart' in window) {
+                        return base * 2.5; // 前は1.5倍だったのを2.5倍に
+                    }
+                    return base * 1.5; // PCでも1.5倍の間引きを追加
+                }
+
+                // 2点間の座標を取得（滑らかな線を描くため、ブラシサイズに応じて密度調整）
+                function getPointsOnLine(x1, y1, x2, y2) {
+                    const points = [];
+                    const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+
+                    // ブラシサイズが大きいほど、必要なステップ数を減らす
+                    const strideFactor = getStrideFactor();
+                    const steps = Math.max(Math.floor(distance / strideFactor), 1);
+
+                    for (let i = 0; i <= steps; i++) {
+                        const t = i / steps;
+                        points.push({
+                            x: x1 + (x2 - x1) * t,
+                            y: y1 + (y2 - y1) * t
+                        });
+                    }
+
+                    return points;
+                }
 
         // イベントリスナーの設定
         uploadBtn.addEventListener('click', () => fileInput.click());
@@ -551,7 +581,7 @@
                     // 元の画像を描画（リサイズあり）
                     ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
                     ctx.drawImage(img, 0, 0, finalWidth, finalHeight);
-                    
+
                     // 初期状態を保存
                     originalImage = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
                     currentState = ctx.getImageData(0, 0, imageCanvas.width, imageCanvas.height);
@@ -576,7 +606,7 @@
         // 変換行列を適用して画像を描画
         function drawImageWithTransform() {
             if (!originalImage) return;
-            
+
             ctx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
             ctx.putImageData(currentState, 0, 0);
         }
@@ -620,7 +650,7 @@
             applyBlurEffect(x, y);
         }
 
-        // 描画中
+            // 描画中（ドラッグ時）
         function draw(e) {
             e.preventDefault();
 
@@ -637,10 +667,32 @@
 
             const { x, y } = getCanvasCoordinates(e);
 
+            // 同じ場所での重複処理を防止（マウスが一定以上動いた場合のみ処理）
+            const distance = Math.sqrt((x - lastX) ** 2 + (y - lastY) ** 2);
+            if (distance < brushSize / 10) {
+                // マウスがほとんど動いていない場合は処理をスキップ
+                return;
+            }
+            
+            const now = Date.now();
+
             // 前回の位置と現在の位置の間を補間して滑らかに
             const points = getPointsOnLine(lastX, lastY, x, y);
-            for (const point of points) {
-                applyBlurEffect(point.x, point.y);
+
+            // スロットリングによる描画の間引き
+            if (now - lastDrawTime > getThrottleTime()) {
+                // 蓄積されたポイントを処理
+                processPoints([...pendingPoints, ...points]);
+                pendingPoints = [];
+                lastDrawTime = now;
+            } else {
+                // ポイントを蓄積
+                pendingPoints.push(...points);
+
+                // アニメーションフレームがまだ予約されていなければ処理をスケジュール
+                if (!drawAnimationId) {
+                    drawAnimationId = requestAnimationFrame(processPendingPoints);
+                }
             }
 
             lastX = x;
@@ -648,9 +700,56 @@
             hasEdits = true;
         }
 
+            // 蓄積されたポイントを処理
+            function processPendingPoints() {
+                drawAnimationId = null;
+                if (pendingPoints.length > 0) {
+                    // より積極的に間引く（前は pendingPoints.length / 5 だった）
+                    const stride = Math.max(1, Math.floor(pendingPoints.length / 3));
+                    const reducedPoints = [];
+
+                // さらに間引く: brushSizeが大きいほどもっと間引く
+                const skipFactor = Math.max(1, Math.floor(brushSize / 50));
+
+                for (let i = 0; i < pendingPoints.length; i += stride * skipFactor) {
+                    reducedPoints.push(pendingPoints[i]);
+                }
+
+                // 残ったポイントの最後のものは必ず含める（視覚的に繋がりを保つため）
+                if (pendingPoints.length > 0 && reducedPoints[reducedPoints.length - 1] !== pendingPoints[pendingPoints.length - 1]) {
+                    reducedPoints.push(pendingPoints[pendingPoints.length - 1]);
+                }
+
+                processPoints(reducedPoints);
+                pendingPoints = [];
+            }
+        }
+
+            // ポイントの配列を処理
+            function processPoints(points) {
+                if (points.length === 0) return;
+
+            // バッチ処理でパフォーマンス向上
+            for (const point of points) {
+                applyBlurEffect(point.x, point.y);
+            }
+        }
+
         // 描画終了
         function stopDrawing(e) {
             if (e) e.preventDefault();
+
+            // 残っているポイントがあれば処理
+            if (pendingPoints.length > 0) {
+                processPoints(pendingPoints);
+                pendingPoints = [];
+            }
+
+            if (drawAnimationId) {
+                cancelAnimationFrame(drawAnimationId);
+                drawAnimationId = null;
+            }
+            
             isPanning = false;
             isDrawing = false;
         }
@@ -734,10 +833,30 @@
             const x = (touch.clientX - rect.left) * scaleX;
             const y = (touch.clientY - rect.top) * scaleY;
 
+            // 同じ場所での重複処理を防止（タッチが一定以上動いた場合のみ処理）
+            const distance = Math.sqrt((x - lastX) ** 2 + (y - lastY) ** 2);
+            if (distance < brushSize / 8) {
+                // タッチがほとんど動いていない場合は処理をスキップ
+                return;
+            }
+
             // 前回の位置と現在の位置の間を補間して滑らかに
             const points = getPointsOnLine(lastX, lastY, x, y);
-            for (const point of points) {
-                applyBlurEffect(point.x, point.y);
+
+            // タッチの場合はスロットリングを追加
+            const now = Date.now();
+            if (now - lastDrawTime > getThrottleTime() * 1.5) {
+                // より積極的に間引く
+                const stride = Math.max(1, Math.floor(points.length / 2));
+                const reducedPoints = [];
+                for (let i = 0; i < points.length; i += stride) {
+                    reducedPoints.push(points[i]);
+                }
+
+                for (const point of reducedPoints) {
+                    applyBlurEffect(point.x, point.y);
+                }
+                lastDrawTime = now;
             }
 
             lastX = x;
@@ -763,24 +882,7 @@
             };
         }
 
-        // 2点間の座標を取得（滑らかな線を描くため）
-        function getPointsOnLine(x1, y1, x2, y2) {
-            const points = [];
-            const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-            const steps = Math.max(Math.floor(distance), 1);
-
-            for (let i = 0; i <= steps; i++) {
-                const t = i / steps;
-                points.push({
-                    x: x1 + (x2 - x1) * t,
-                    y: y1 + (y2 - y1) * t
-                });
-            }
-
-            return points;
-        }
-
-                // ぼかし効果の適用（パフォーマンス最適化版）
+            // ぼかし効果の適用（パフォーマンス最適化版）
         function applyBlurEffect(x, y) {
             // リクエストアニメーションフレームを使った非同期処理
             requestAnimationFrame(() => {
@@ -792,20 +894,20 @@
                 ctx.beginPath();
                 ctx.arc(x, y, radius, 0, Math.PI * 2, false);
                 ctx.clip();
-                
+
                 // キャンバス上の小さな領域だけを処理
                 const areaSize = radius * 2;
                 const areaX = Math.max(0, x - radius);
                 const areaY = Math.max(0, y - radius);
                 const areaWidth = Math.min(areaSize, imageCanvas.width - areaX);
                 const areaHeight = Math.min(areaSize, imageCanvas.height - areaY);
-                
+
                 // スタックオーバーフローを避けるため小さなサイズにする
                 const maxRenderSize = Math.min(areaWidth, areaHeight, 300);
                 const scaleFactor = maxRenderSize / Math.max(areaWidth, areaHeight);
                 const renderWidth = Math.ceil(areaWidth * scaleFactor);
                 const renderHeight = Math.ceil(areaHeight * scaleFactor);
-                
+
                 // 処理領域をスケールダウンして処理を軽くする
                 const tempCanvas = document.createElement('canvas');
                 tempCanvas.width = renderWidth;
@@ -892,16 +994,16 @@
         // 元の画像オブジェクトを保存する変数
         let originalImageObj = null;
     </script>
-<script>
-    // GitHub Pagesでホスティングするためのサービスワーカー登録
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/BlurTool/sw.js').catch(error => {
-                console.log('ServiceWorker registration failed:', error);
+    <script>
+        // GitHub Pagesでホスティングするためのサービスワーカー登録
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/BlurTool/sw.js').catch(error => {
+                    console.log('ServiceWorker registration failed:', error);
+                });
             });
-        });
-    }
-</script>
+        }
+    </script>
 </body>
 
 </html>
